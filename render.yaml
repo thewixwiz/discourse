@@ -3,7 +3,7 @@ services:
     name: discourse-web
     env: docker
     dockerfilePath: ./Dockerfile
-    plan: standard
+    plan: starter
     autoDeploy: true
     healthCheckPath: /srv/status
     envVars:
@@ -64,5 +64,4 @@ services:
 
 databases:
   - name: discourse-db
-    plan: basic-2gb        
-    storageGB: 50
+    plan: free        
