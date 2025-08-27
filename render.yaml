@@ -64,4 +64,5 @@ services:
 
 databases:
   - name: discourse-db
-    plan: standard
+    plan: basic-2gb        
+    storageGB: 50
