@@ -10,7 +10,7 @@ services:
       - key: RAILS_ENV
         value: production
       - key: DISCOURSE_HOSTNAME
-        value: forum.example.com          # <- change to your domain
+        value: forum.example.com
       - key: SECRET_KEY_BASE
         generateValue: true
       - key: DATABASE_URL
@@ -22,28 +22,16 @@ services:
           name: discourse-redis
           type: redis
           property: connectionString
-      # SMTP (required)
       - key: DISCOURSE_SMTP_ADDRESS
         value: smtp.yourprovider.com
       - key: DISCOURSE_SMTP_PORT
         value: "587"
       - key: DISCOURSE_SMTP_USER_NAME
-        value: your_smtp_username
+        value: your_username
       - key: DISCOURSE_SMTP_PASSWORD
         sync: false
       - key: DISCOURSE_DEVELOPER_EMAILS
         value: you@example.com
-      # Optional: S3 for uploads (recommended)
-      # - key: DISCOURSE_USE_S3
-      #   value: "true"
-      # - key: DISCOURSE_S3_REGION
-      #   value: us-east-1
-      # - key: DISCOURSE_S3_BUCKET
-      #   value: your-bucket
-      # - key: DISCOURSE_S3_ACCESS_KEY_ID
-      #   sync: false
-      # - key: DISCOURSE_S3_SECRET_ACCESS_KEY
-      #   sync: false
     dockerCommand: >
       bash -lc "bundle exec rake db:migrate &&
                 bundle exec puma -C config/puma.rb"
@@ -70,12 +58,10 @@ services:
     dockerCommand: >
       bash -lc "bundle exec sidekiq -e production -C config/sidekiq.yml"
 
+  - type: redis
+    name: discourse-redis
+    ipAllowList: []   # internal only
+
 databases:
   - name: discourse-db
     plan: standard
-
-# Redis as a managed service
-services:
-  - type: redis
-    name: discourse-redis
-    ipAllowList: []    # internal access only
